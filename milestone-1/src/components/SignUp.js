@@ -6,8 +6,32 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [fullname, setFullname] = useState("");
-  const [password, setPassword] = useState("")
+  const [password, setPassword] = useState("");
+
+  async function submitHandler() {
+    e.preventDefault()
+    try {
+      const response = await fetch("https://insta-backend-hr3a.onrender.com/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: fullname,
+          email: email,
+          password: password,
+          userName: username
+        })
+      })
+      const data = await response.json()
+      console.log(data);
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   async function submitHandler(e) {
+    console.log(e);
     e.preventDefault()
     console.log(email, username, fullname, password);
     try {
@@ -32,7 +56,7 @@ export default function SignUp() {
   return (
     <div className="signUp">
       <div className="form-container">
-        <div className="form" >
+        <div className="form"  >
           <img className="signUpLogo" src={logo} alt="" />
           <p className="loginPara">
             Sign up to see photos and videos <br /> from your friends
