@@ -3,16 +3,18 @@ import './App.css';
 import SignUp from './Pages/SignUp';
 import SignIn from './Pages/SingIn';
 import Home from './Pages/Home';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
+import { BrowserRouter, Routes, Route ,Navigate} from 'react-router-dom';
 
 function App() {
-  return (
+  const [isLogin,setIsLogin] = useState(!!localStorage.getItem("token"))
+   return (
     <BrowserRouter>
       <div className="App">
         <Routes>
-          <Route path='/login' element={<SignIn></SignIn>}></Route>
+          <Route path='/login' element={isLogin?<Navigate to={"/"}></Navigate>: <SignIn setIsLogin={setIsLogin}></SignIn>}></Route>
           <Route path='/register' element={<SignUp></SignUp>}></Route>
-          <Route path='/' element={<Home></Home>}></Route>
+          <Route path='/' element={isLogin ? <Home></Home> : <Navigate to={"/login"}></Navigate>}></Route>
 
         </Routes>
 

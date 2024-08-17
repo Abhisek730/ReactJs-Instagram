@@ -4,7 +4,7 @@ import './Css/SignUp.css';
 import { Link ,useNavigate} from 'react-router-dom';
 
 
-export default function SignIn() {
+export default function SignIn({setIsLogin}) {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     console.log("i am signup page")
@@ -32,7 +32,7 @@ export default function SignIn() {
             if (data.token) {
                 console.log("Succesful Login")
                 localStorage.setItem("token",data.token)
-                
+                setIsLogin(true)
                 navigate("/")
             }
 
