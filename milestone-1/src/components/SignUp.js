@@ -8,30 +8,29 @@ export default function SignUp() {
   const [fullname, setFullname] = useState("");
   const [password, setPassword] = useState("");
 
-  async function submitHandler() {
-    e.preventDefault()
-    try {
-      const response = await fetch("https://insta-backend-hr3a.onrender.com/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          name: fullname,
-          email: email,
-          password: password,
-          userName: username
-        })
-      })
-      const data = await response.json()
-      console.log(data);
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  // async function submitHandler() {
+  //   e.preventDefault()
+  //   try {
+  //     const response = await fetch("https://insta-backend-hr3a.onrender.com/signup", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json"
+  //       },
+  //       body: JSON.stringify({
+  //         name: fullname,
+  //         email: email,
+  //         password: password,
+  //         userName: username
+  //       })
+  //     })
+  //     const data = await response.json()
+  //     console.log(data);
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
 
   async function submitHandler(e) {
-    console.log(e);
     e.preventDefault()
     console.log(email, username, fullname, password);
     try {
