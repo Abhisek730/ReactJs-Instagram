@@ -1,14 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { FaHeart, FaComment, FaShare } from 'react-icons/fa';
 import { CiLogout } from "react-icons/ci";
+import { FaPlus } from "react-icons/fa6";
 import LogOut from '../Components/LogOut';
+import AddPost from '../Components/AddPost';
 
 const Home = ({ setIsLogin }) => {
     const [posts, setPosts] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false)
+
     const openModal = () => setIsModalOpen(true)
     const closeModal = () => setIsModalOpen(false)
 
+const [newPost,setNewPost] = useState(true)
+
+    const [isAddPostModalOpen, setIsAddPostModalOpen] = useState(false)
+    const openAddPostModal = () => setIsAddPostModalOpen(true)
+    const closeAddPostModal = () => setIsAddPostModalOpen(false)
+
+    function updateNewPostValue(){
+        setNewPost((prev)=> !prev)
+    }
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -30,7 +42,7 @@ const Home = ({ setIsLogin }) => {
         }
 
         fetchPost()
-    }, [])
+    }, [newPost])
 
 
 
@@ -51,8 +63,9 @@ const Home = ({ setIsLogin }) => {
                         style={styles.searchInput}
                     />
                 </div>
-                <div style={styles.navRight} onClick={openModal}>
-                    <CiLogout style={{ fontSize: "25px", padding: '5px', backgroundColor: 'red', color: 'white', borderRadius: "50%", cursor: 'pointer' }} />
+                <div style={styles.navRight} >
+                    <FaPlus style={{ fontSize: "25px", padding: '5px', cursor: 'pointer', marginRight: "10px" }} onClick={openAddPostModal} />
+                    <CiLogout onClick={openModal} style={{ fontSize: "25px", padding: '5px', backgroundColor: 'red', color: 'white', borderRadius: "50%", cursor: 'pointer' }} />
                 </div>
             </nav>
 
@@ -86,6 +99,7 @@ const Home = ({ setIsLogin }) => {
                 }
             </div>
             <LogOut isModalOpen={isModalOpen} closeModal={closeModal} setIsLogin={setIsLogin}> </LogOut>
+            <AddPost updateNewPostValue={updateNewPostValue} isModalOpen={isAddPostModalOpen} closeModal={closeAddPostModal}></AddPost>
         </div>
     );
 };
