@@ -4,6 +4,9 @@ import { CiLogout } from "react-icons/ci";
 import { FaPlus } from "react-icons/fa6";
 import LogOut from '../Components/LogOut';
 import AddPost from '../Components/AddPost';
+import { FaRegHeart } from "react-icons/fa";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Home = ({ setIsLogin }) => {
     const [posts, setPosts] = useState([]);
@@ -12,14 +15,14 @@ const Home = ({ setIsLogin }) => {
     const openModal = () => setIsModalOpen(true)
     const closeModal = () => setIsModalOpen(false)
 
-const [newPost,setNewPost] = useState(true)
+    const [newPost, setNewPost] = useState(true)
 
     const [isAddPostModalOpen, setIsAddPostModalOpen] = useState(false)
     const openAddPostModal = () => setIsAddPostModalOpen(true)
     const closeAddPostModal = () => setIsAddPostModalOpen(false)
 
-    function updateNewPostValue(){
-        setNewPost((prev)=> !prev)
+    function updateNewPostValue() {
+        setNewPost((prev) => !prev)
     }
 
     useEffect(() => {
@@ -44,6 +47,50 @@ const [newPost,setNewPost] = useState(true)
         fetchPost()
     }, [newPost])
 
+    async function likePost(postId) {
+        try {
+            const response = await fetch("https://insta-backend-hr3a.onrender.com/like",{
+                method:"PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
+                body:JSON.stringify({
+                    postId:postId
+                })
+            });
+            const data = await response.json();
+            console.log(data);
+            toast.success("Liked Successfully6")
+            updateNewPostValue()
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+
+    async function unlikePost(postId) {
+        try {
+            const response = await fetch("https://insta-backend-hr3a.onrender.com/unlike",{
+                method:"PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
+                body:JSON.stringify({
+                    postId:postId
+                })
+            });
+            const data = await response.json();
+            console.log(data);
+            toast.success("UnLiked Successfully6")
+            updateNewPostValue()
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
 
     return (
@@ -65,9 +112,12 @@ const [newPost,setNewPost] = useState(true)
                 </div>
                 <div style={styles.navRight} >
                     <FaPlus style={{ fontSize: "25px", padding: '5px', cursor: 'pointer', marginRight: "10px" }} onClick={openAddPostModal} />
+
+
                     <CiLogout onClick={openModal} style={{ fontSize: "25px", padding: '5px', backgroundColor: 'red', color: 'white', borderRadius: "50%", cursor: 'pointer' }} />
                 </div>
             </nav>
+
 
             <div style={styles.feedContainer}>
                 {posts &&
@@ -87,7 +137,14 @@ const [newPost,setNewPost] = useState(true)
                                 style={styles.feedImage}
                             />
                             <div style={styles.feedActions}>
-                                <FaHeart style={styles.actionIcon} />
+                                <div style={{ display: "flex", alignItems: "center" }}>
+                                    <span style={{ marginRight: "5px", }}>{post.likes.length}</span>
+                                    {post.likes.includes(localStorage.getItem("userId")) ? <FaRegHeart  style={styles.redIcon}  onClick={()=>unlikePost(post._id)}/> :<FaRegHeart onClick={()=>likePost(post._id)} style={styles.actionIcon} />
+
+                                    }
+                                    
+                                    
+                                </div>
                                 <FaComment style={styles.actionIcon} />
                                 <FaShare style={styles.actionIcon} />
                             </div>
@@ -99,7 +156,10 @@ const [newPost,setNewPost] = useState(true)
                 }
             </div>
             <LogOut isModalOpen={isModalOpen} closeModal={closeModal} setIsLogin={setIsLogin}> </LogOut>
+
+
             <AddPost updateNewPostValue={updateNewPostValue} isModalOpen={isAddPostModalOpen} closeModal={closeAddPostModal}></AddPost>
+            <ToastContainer />
         </div>
     );
 };
@@ -109,6 +169,9 @@ const styles = {
         fontFamily: 'Arial, sans-serif',
 
         margin: '0 auto',
+    },
+    redIcon:{
+backgroundColor:"red"
     },
     navbar: {
         display: 'flex',
@@ -162,9 +225,10 @@ const styles = {
     },
     feedActions: {
         display: 'flex',
-        justifyContent: 'space-around',
+        justifyContent: 'flex-start',
         padding: '10px',
         fontSize: '20px',
+        gap: "15px"
     },
     actionIcon: {
         cursor: 'pointer',

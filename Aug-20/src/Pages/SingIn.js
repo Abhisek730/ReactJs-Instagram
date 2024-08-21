@@ -31,7 +31,8 @@ export default function SignIn({setIsLogin}) {
 
             if (data.token) {
                 console.log("Succesful Login")
-                localStorage.setItem("token",data.token)
+                localStorage.setItem("token",data.token);
+                localStorage.setItem("userId",data.user._id)
                 setIsLogin(true)
                 navigate("/")
             }
