@@ -5,6 +5,7 @@ import SignIn from './Pages/SingIn';
 import Home from './Pages/Home';
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route ,Navigate} from 'react-router-dom';
+import ProfilePage from './Pages/Profile';
 
 function App() {
 
@@ -21,7 +22,7 @@ function App() {
           <Route path='/login' element={isLogin?<Navigate to={"/"}></Navigate>: <SignIn setIsLogin={setIsLogin}></SignIn>}></Route>
           <Route path='/register' element={<SignUp></SignUp>}></Route>
           <Route path='/' element={isLogin ? <Home setIsLogin={setIsLogin}></Home> : <Navigate to={"/login"}></Navigate>}></Route>
-
+          <Route path='/profile' element={<ProfilePage></ProfilePage>}></Route>
         </Routes>
 
 

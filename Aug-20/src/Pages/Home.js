@@ -6,6 +6,7 @@ import LogOut from '../Components/LogOut';
 import AddPost from '../Components/AddPost';
 import { FaRegHeart } from "react-icons/fa";
 import { ToastContainer, toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Home = ({ setIsLogin }) => {
@@ -129,7 +130,7 @@ const Home = ({ setIsLogin }) => {
                                     alt="User"
                                     style={styles.feedUserIcon}
                                 />
-                                <span style={styles.feedUserName}>{post.postedBy.name}</span>
+                               <Link to={`/profile?userId=${post.postedBy._id}`}><span style={styles.feedUserName}>{post.postedBy.name}</span></Link> 
                             </div>
                             <img
                                 src={post.photo}
