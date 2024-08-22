@@ -13,6 +13,10 @@ const Home = ({ setIsLogin }) => {
     const [posts, setPosts] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [comment, setComment] = useState("")
+    const [isCommentBox, setIsCommentBox] = useState(false)
+    function toggleCommentBox(){
+        setIsCommentBox((prev)=>!prev)
+    }
 
     const openModal = () => setIsModalOpen(true)
     const closeModal = () => setIsModalOpen(false)
@@ -38,7 +42,7 @@ const Home = ({ setIsLogin }) => {
                     }
                 })
                 const data = await response.json()
-                console.log(data[0].comments[0].postedBy);
+                console.log(data);
                 setPosts(data)
 
             } catch (err) {
@@ -167,23 +171,25 @@ const Home = ({ setIsLogin }) => {
 
 
                                 </div>
-                                <FaComment style={styles.actionIcon} />
+                                <div style={styles.feedActions}>  
+                                <span style={{ marginRight: "0px" }}>{post.comments.length}</span>
+                                     <FaComment onClick={toggleCommentBox} style={styles.actionIcon} /></div>
+                             
                                 <FaShare style={styles.actionIcon} />
                             </div>
                             <div style={styles.feedCaption}>
                                 <span style={styles.feedUserName}>{post.postedBy.name}</span> {post.body}
                             </div>
-                            <div style={{ height: "100px", borderTop: "1px solid #ccc",overflowY:"scroll" }}>
+                            <div className={isCommentBox ?'comment-box-open':"comment-box-hide"} style={{ height: "100px", borderTop: "1px solid #ccc", overflowY: "scroll" }}>
 
                                 {post.comments.map((commentDetail) => (
                                     <div key={commentDetail._id} style={{ display: "flex", alignItems: "center", gap: "10px", padding: "0px 10px" }}>
-                                        
+
+                                        <h5>{commentDetail.postedBy ? commentDetail.postedBy.name : "Unknown User"}</h5>
                                         <p>{commentDetail.comment}</p>
                                     </div>
-                                ))
-
-                                }
-
+                                )
+                                )}
 
                             </div>
                             <div style={{ display: "flex", alignItems: "center", borderTop: "1px solid black" }}>
